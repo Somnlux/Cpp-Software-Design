@@ -1,1 +1,24 @@
 
+name: C++ CI
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install Dependencies
+      run: sudo apt-get install -y cmake g++
+    - name: Build
+      run: |
+        cmake . -Bbuild
+        cmake --build build
+    - name: Run Tests
+      run: |
+        cd build
+        ctest --output-on-failure
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: StrategyPattern
+        path: build/StrategyPattern
+
